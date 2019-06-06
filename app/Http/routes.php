@@ -10,9 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
-Route::auth();
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +19,7 @@ Route::group(['prefix' => '', 'middleware' => ['front']], function () {
     Route::delete('recipe/{id}', 'SiteController@destroy')->name('recipes.destroy');
     Route::get('recipe/{id}', 'RecipesController@show')->name('front.recipe.show');
     Route::get('/edit_recipe/{id}', 'RecipesController@edit')->name('front.recipe.edit');
+    Route::post('/edit_recipe/{id}', 'RecipesController@update')->name('front.recipe.update');
     Route::get('/add_recipe', 'RecipesController@create')->name('front.recipe.create');
     Route::post('/add_recipe', 'RecipesController@store')->name('front.recipe.store');
     Route::get('/ingredients', 'IngredientsController@index')->name('front.ingredients.index');

@@ -26,19 +26,23 @@ class RecipesRepository extends Repository
             'title' => $data['title'] ?: null
         ];
         $recipe = $this->create($recipe);
-        $recipe->ingredients()->sync($recipe);
+        $recipe->ingredients()->sync([$data['id'] => [
+            'ingredients_count' => $data['ingredients_count']
+        ]]);
         return $recipe;
     }
 
     public function editRecipe($data, $id)
     {
+        $recipe = Recipes::with(['ingredients'])->find($id);
         $array = [
             'description' => $data['description'] ?: null,
             'title' => $data['title'] ?: null
         ];
         $this->update($array, ['id' => $id]);
-        $recipe = Recipes::find($id);
-        $this->editRecipe($data, $recipe);
+        $recipe->ingredients()->sync([$data['id'] => [
+            'ingredients_count' => $data['ingredients_count']
+        ]]);
+        return view('layouts.site', compact('recipe'));
     }
-
 }

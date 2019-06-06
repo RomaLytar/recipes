@@ -79,11 +79,12 @@ class RecipesController extends Controller
      */
     public function edit($id)
     {
+        $names = Ingredients::pluck('title', 'id')->toArray();
         $recipe = Recipes::find($id);
         if (empty($recipe)) {
             abort(404);
         }
-        return view('layouts.recipes_edit', compact('recipe'));
+        return view('layouts.edit_recipe', compact('recipe', 'names'));
     }
     /**
      * Update the specified resource in storage.
@@ -94,7 +95,10 @@ class RecipesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $this->recipesRepository->editRecipe($data, $id);
+        Session::flash('message', 'Успешно обновлено!');
+        return redirect()->route('front.home');
     }
 
     /**

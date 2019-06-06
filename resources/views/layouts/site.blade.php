@@ -29,11 +29,11 @@
             @foreach ($recipes as $recipe)
                 <tr>
                     <th>{{ $recipe->title }}</th>
-                    <th>{{ $recipe->description }}</th>
+                    <th>{{ str_limit($recipe->description, 100) }}</th>
                     <th>
                         @if (Auth::check())
                             <a href="recipe/{{$recipe->id}}">Просмотр</a>
-                            {{--                        <a href="{{ route('front.recipe.show',$recipe->id) }}">Редактировать</a>--}}
+                            <a href="{{route('front.recipe.edit', $recipe->id) }}">Редактировать</a>
                             {{ Form::open(['method' => 'DELETE', 'route' => ['recipes.destroy', $recipe->id], 'data-confirm' => 'Уверен?', 'style' => 'display:inline-block' ])}}
                             {{ Form::button("Удалить", ['type' => 'submit', 'class' => 'btn btn-danger']) }}
                             {{ Form::close() }}
